@@ -1,23 +1,3 @@
-var ballX = 70;
-var ballY = 335;
-var ballX2 = 30;
-var ballY2 = 410;
-var ballX3 = 70;
-var ballY3 = 335;
-var ballSpeedX = 1;
-var ballSpeedY = 5;
-var obstacleX = 640;
-var backgroundImg;
-var skater1Img;
-var skater2Img;
-var skater3Img;
-var benchImg;
-var ashTrayImg;
-var canImg;
-var eagleImg;
-var policeLineImg;
-var trashCanImg;
-
 
 function preload() {
 	backgroundImg = loadImage("images/background.JPG");
@@ -34,46 +14,159 @@ function preload() {
 
 
 
+
+/// these positions remain unchanged throughout the code
+var xBallPos;
+var yBallPos;
+var yFloor;
+var boxSize;
+
+var level = [0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,3,0,0,0,0,0,0,4,0,0,0,0,0,0,0,2,0,0,0,0,5,0,1,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,
+	0,1,0,0,4,0,0,0,0,0,1,0,0,0,0,0,2,0,0,0,0,0,0,0,4,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,
+	0,0,0,1,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,1,0,0,,0,0,0,3,0,0,0,0,1,0,0,0,0,0,2,0,0,0,1,0,0,0,0,0,0,4,0,0,0,2,0,0,0,3,0,0,0,1];
+var scroll = 0;
+
+var gameOver;
+
+var jump = false;
+var jumpMillis = 0;
+
 function setup() {
 	// create a place to draw
-	fill(122, 143, 142);
-	createCanvas(640, 460);
+	createCanvas(640, 480);
+	noStroke();
+	// noLoop();
+	image(backgroundImg, 0, 0)
+
+
+	// ball positions
+	xBallPos = 80;
+	yBallPos = 360;
+	yFloor = yBallPos;
+
+	boxSize = 30;
+	ballSize = 40;
 
 }
 
 function draw() {
-	// draw the background
 	image(backgroundImg, 0, 0)
 
-	// set a fill color
-	fill(255, 165, 0);
-  noStroke();
+	if (gameOver) {
+		textSize(40);
+		text("YOU LOST", 200, 100);
+		textSize(15)
+		text("Final Score" , 260, 360)
+		textSize(20)
+		text(int(scroll/40), 290, 430);
 
-	// draw the skater
+	} else {
+			scroll = scroll + 3;
 
-if (mouseIsPressed) {ballX2 = ballX2 + ballSpeedX
-										 ballY2 = ballY2 - ballSpeedY}
+			for (var i = 0; i < level.length; i ++) {
+				if (level[i] == 1) {
+					fill(210, 30, 100);
 
-else {ballX2 = ballX2 + 0
-			ballY2 = ballY2 + ballSpeedY}
+					// first type of obstacle
+					image(benchImg, boxSize - scroll + i*40, 320)
 
-if (ballY2 > 335) {ballY2 = 335}
+					// detect obstacle
+					if (xBallPos < (boxSize - scroll + i*40) + ballSize/2 &&
+					xBallPos > (boxSize - scroll + i*40) - ballSize/2 &&
+					yBallPos <= yFloor && yBallPos >= yFloor - boxSize){
+						// do the game over part
+						gameOver = true
 
-image(skater1Img, ballX, ballY);
-image(skater3Img, ballX2, ballY2);
+						console.log("hit");
+					}
+				} else if (level[i] == 2){
 
+					// second type of obstacle
+					image(eagleImg, boxSize - scroll + i*40, 220)
 
+					// detect obstacle
+					if (xBallPos < (boxSize - scroll + i*40) + ballSize/2 &&
+					xBallPos > (boxSize - scroll + i*40) - ballSize/2 &&
+					yBallPos <= 250 + boxSize && yBallPos >= 250){
+						// do the game over part
+						gameOver = true
 
-// obstacle
+						console.log("hit");
+					}
+				} else if (level[i] == 3){
+					// second type of obstacle
+					image(ashTrayImg, boxSize - scroll + i*40 + 20, 330)
 
-obstacleX = obstacleX - random(4,6)
+					// detect obstacle
+					if (xBallPos < (boxSize - scroll + i*40) + ballSize/2 &&
+					xBallPos > (boxSize - scroll + i*40) - ballSize/2 &&
+					yBallPos <= 320 + boxSize && yBallPos >= 320){
+						// do the game over part
+						gameOver = true
 
-// don't let the obstacle go to far
-if (obstacleX < 0) {
-	obstacleX = 640;
-}
+						console.log("hit");
+					}
+				} else if (level[i] == 4){
+					// second type of obstacle
+					image(trashCanImg, boxSize - scroll + i*40 + 20, 340)
 
-image(trashCanImg, obstacleX, 380);
+					// detect obstacle
+					if (xBallPos < (boxSize - scroll + i*40) + ballSize/2 &&
+					xBallPos > (boxSize - scroll + i*40) - ballSize/2 &&
+					yBallPos <= 320 + boxSize && yBallPos >= 320){
+						// do the game over part
+						gameOver = true
 
+						console.log("hit");
+					}
+				}else if (level[i] == 5){
 
+					// second type of obstacle
+					image(canImg, boxSize - scroll + i*40 + 35, 245)
+
+					// detect obstacle
+					if (xBallPos < (boxSize - scroll + i*40) + ballSize/2 &&
+					xBallPos > (boxSize - scroll + i*40) - ballSize/2 &&
+					yBallPos <= 250 + boxSize && yBallPos >= 250){
+						// do the game over part
+						gameOver = true
+
+						console.log("hit");
+					}
+				}
+
+				textSize(30);
+				text("Score:", 20, height - 30);
+				// score is ten times smaller than scroll
+				text(int(scroll/40), 150, height - 30);
+
+			}
+
+			if (keyIsDown(UP_ARROW)) {
+				if (jump == false) {
+					jumpMillis = millis();
+				}
+				jump = true;
+			}
+
+			if (jump) {
+				// jump up
+				if (millis()-jumpMillis > 0 && millis()-jumpMillis < 300) {
+					yBallPos -= 7;
+				} else
+
+				// jump down
+				if (millis()-jumpMillis > 300 && millis()-jumpMillis < 600) {
+					yBallPos += 7;
+				}
+
+				if (millis() > jumpMillis + 600) {
+					jump = false;
+					yBallPos = 360;
+
+				}
+			}
+			// main ball
+			image(skater2Img, xBallPos-30, yBallPos-60);
+	}
 }
