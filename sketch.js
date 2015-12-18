@@ -21,12 +21,13 @@ var yBallPos;
 var yFloor;
 var boxSize;
 
-var level = [0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,3,0,0,0,0,0,0,4,0,0,0,0,0,0,0,2,0,0,0,0,5,0,1,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,
+var level = [0,0,0,0,0,0,0,0,0,0,5,0,0,0,3,0,0,0,0,0,0,4,0,0,0,0,0,0,0,2,0,0,0,0,5,0,1,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,
 	0,1,0,0,4,0,0,0,0,0,1,0,0,0,0,0,2,0,0,0,0,0,0,0,4,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,
-	0,0,0,1,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,1,0,0,,0,0,0,3,0,0,0,0,1,0,0,0,0,0,2,0,0,0,1,0,0,0,0,0,0,4,0,0,0,2,0,0,0,3,0,0,0,1];
+	0,0,0,1,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,1,0,0,,0,0,0,3,0,0,0,0,1,0,0,0,0,0,2,0,0,0,1,0,0,0,0,0,0,4,0,0,0,2,0,0,0,3,0,0,0,1,0,0,0,6];
 var scroll = 0;
 
 var gameOver;
+var gameWon;
 
 var jump = false;
 var jumpMillis = 0;
@@ -51,6 +52,21 @@ function setup() {
 
 function draw() {
 	image(backgroundImg, 0, 0)
+
+
+
+	if (gameWon) {
+		textSize(40);
+		text("YOU WON!!", 200, 100);
+		textSize(15)
+		text("Final Score" , 260, 360)
+		textSize(20)
+		text(int(scroll/40), 285, 430);
+
+	}
+
+
+
 
 	if (gameOver) {
 		textSize(40);
@@ -100,7 +116,7 @@ function draw() {
 					// detect obstacle
 					if (xBallPos < (boxSize - scroll + i*40) + ballSize/2 &&
 					xBallPos > (boxSize - scroll + i*40) - ballSize/2 &&
-					yBallPos <= 320 + boxSize && yBallPos >= 320){
+					yBallPos <= 350 + boxSize && yBallPos >= 350){
 						// do the game over part
 						gameOver = true
 
@@ -119,7 +135,7 @@ function draw() {
 
 						console.log("hit");
 					}
-				}else if (level[i] == 5){
+				} else if (level[i] == 5){
 
 					// second type of obstacle
 					image(canImg, boxSize - scroll + i*40 + 35, 245)
@@ -133,14 +149,30 @@ function draw() {
 
 						console.log("hit");
 					}
+				} else if (level[i] == 6){
+					// second type of obstacle
+					image(policeLineImg, boxSize - scroll + i*40 + 20, 310)
+
+					// detect obstacle
+					if (xBallPos < (boxSize - scroll + i*40) + ballSize/2 &&
+					xBallPos > (boxSize - scroll + i*40) - ballSize/2 &&
+					yBallPos <= 330 + boxSize && yBallPos >= 330){
+						// do the game over part
+						gameWon = true
+
+						console.log("hit");
+					}
 				}
 
-				textSize(30);
-				text("Score:", 20, height - 30);
+
+
+				textSize(25);
+				text("Score:", 11, height - 40);
 				// score is ten times smaller than scroll
-				text(int(scroll/40), 150, height - 30);
+				text(int(scroll/40), 107, height - 39);
 
 			}
+
 
 			if (keyIsDown(UP_ARROW)) {
 				if (jump == false) {
